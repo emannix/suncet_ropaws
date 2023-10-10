@@ -13,6 +13,8 @@ from src.utils import (
     AllReduce
 )
 
+from pdb import set_trace as pb
+
 logger = getLogger()
 
 
@@ -156,7 +158,6 @@ def init_paws_loss(
         if me_max:
             avg_probs = AllReduce.apply(torch.mean(sharpen(probs), dim=0))
             rloss -= torch.sum(torch.log(avg_probs**(-avg_probs)))
-
         return loss, rloss
 
     return loss

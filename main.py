@@ -5,6 +5,11 @@
 # LICENSE file in the root directory of this source tree.
 #
 
+# python main.py \
+#   --sel paws_train \
+#   --fname configs/tests/cifar10_train.yaml
+
+
 import argparse
 
 import torch.multiprocessing as mp
@@ -87,7 +92,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     num_gpus = len(args.devices)
-    mp.spawn(
-        process_main,
-        nprocs=num_gpus,
-        args=(args.sel, args.fname, num_gpus, args.devices))
+    rank = 0
+    process_main(rank, args.sel, args.fname, num_gpus, args.devices)
+    # mp.spawn(
+    #     process_main,
+    #     nprocs=num_gpus,
+    #     args=(args.sel, args.fname, num_gpus, args.devices))

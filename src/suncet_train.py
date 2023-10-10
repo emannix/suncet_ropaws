@@ -46,7 +46,7 @@ from src.data_manager import (
 from src.sgd import SGD
 from src.lars import LARS
 
-import apex
+# import apex
 from torch.nn.parallel import DistributedDataParallel
 
 # --

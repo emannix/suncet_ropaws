@@ -4,7 +4,7 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 #
-
+from pdb import set_trace as pb
 import os
 
 # -- FOR DISTRIBUTED TRAINING ENSURE ONLY 1 DEVICE VISIBLE PER PROCESS
@@ -46,7 +46,7 @@ from src.data_manager import (
 from src.sgd import SGD
 from src.lars import LARS
 
-import apex
+# import apex
 from torch.nn.parallel import DistributedDataParallel
 
 # --
@@ -348,7 +348,6 @@ def main(args):
                             target_supports=target_supports,
                             target_support_labels=labels)
                         loss = ploss + me_max
-
                 scaler.scale(loss).backward()
                 lr_stats = scaler.step(optimizer)
                 scaler.update()

@@ -25,6 +25,7 @@ from PIL import ImageFilter
 from PIL import ImageOps
 
 _GLOBAL_SEED = 0
+num_workers = 8
 logger = getLogger()
 
 
@@ -172,7 +173,7 @@ def _init_cifar10_ft_data(
             batch_size=batch_size,
             drop_last=drop_last,
             pin_memory=True,
-            num_workers=8)
+            num_workers=num_workers)
     else:
         dist_sampler = ClassStratifiedSampler(
             data_source=dataset,
@@ -186,7 +187,7 @@ def _init_cifar10_ft_data(
             dataset,
             batch_sampler=dist_sampler,
             pin_memory=True,
-            num_workers=8)
+            num_workers=num_workers)
 
     return (data_loader, dist_sampler)
 
@@ -226,7 +227,7 @@ def _init_cifar10_data(
         batch_size=u_batch_size,
         drop_last=True,
         pin_memory=True,
-        num_workers=8)
+        num_workers=num_workers)
 
     supervised_sampler, supervised_loader = None, None
     if classes_per_batch > 0 and s_batch_size > 0:
@@ -249,7 +250,7 @@ def _init_cifar10_data(
         supervised_loader = torch.utils.data.DataLoader(
             supervised_set,
             batch_sampler=supervised_sampler,
-            num_workers=8)
+            num_workers=num_workers)
         if len(supervised_loader) > 0:
             tmp = ceil(len(unsupervised_loader) / len(supervised_loader))
             supervised_sampler.set_inner_epochs(tmp)
@@ -302,7 +303,7 @@ def _init_imgnt_ft_data(
             batch_size=batch_size,
             drop_last=drop_last,
             pin_memory=True,
-            num_workers=8)
+            num_workers=num_workers)
     else:
         dist_sampler = ClassStratifiedSampler(
             data_source=dataset,
@@ -316,7 +317,7 @@ def _init_imgnt_ft_data(
             dataset,
             batch_sampler=dist_sampler,
             pin_memory=True,
-            num_workers=8)
+            num_workers=num_workers)
 
     return (data_loader, dist_sampler)
 
@@ -364,7 +365,7 @@ def _init_imgnt_data(
         batch_size=u_batch_size,
         drop_last=True,
         pin_memory=True,
-        num_workers=8)
+        num_workers=num_workers)
     logger.info('ImageNet unsupervised data loader created')
 
     supervised_sampler, supervised_loader = None, None
@@ -388,7 +389,7 @@ def _init_imgnt_data(
             supervised_set,
             batch_sampler=supervised_sampler,
             pin_memory=True,
-            num_workers=8)
+            num_workers=num_workers)
         if len(supervised_loader) > 0:
             tmp = ceil(len(unsupervised_loader) / len(supervised_loader))
             supervised_sampler.set_inner_epochs(tmp)
@@ -1015,7 +1016,7 @@ class TransCIFAR10(torchvision.datasets.CIFAR10):
             data_path = os.path.join(root, image_folder)
         logger.info(f'data-path {data_path}')
 
-        super().__init__(data_path, train, transform, target_transform, False)
+        super().__init__(data_path, train, transform, target_transform, True)
 
         self.supervised_views = supervised_views
         self.multicrop_transform = multicrop_transform

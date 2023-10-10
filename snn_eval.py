@@ -5,6 +5,17 @@
 # LICENSE file in the root directory of this source tree.
 #
 
+
+# python snn_eval.py \
+#   --model-name wide_resnet28w2 \
+#   --pretrained output/paws-latest.pth.tar \
+#   --unlabeled-frac 0.92 \
+#   --root-path datasets \
+#   --image-folder cifar10-data \
+#   --dataset-name cifar10_fine_tune \
+#   --split-seed 152 \
+#   --subset-path cifar10_subsets/
+
 import argparse
 import logging
 import pprint
@@ -44,7 +55,7 @@ parser.add_argument(
     help='path to pretrained model',
     default='')
 parser.add_argument(
-    '--split-seed', type=float,
+    '--split-seed', type=int,
     default=152,
     help='seed for labeled data-split')
 parser.add_argument(
